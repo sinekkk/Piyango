@@ -21,7 +21,7 @@ import com.piyango.R;
 import com.piyango.json.CekilisRequest;
 import com.piyango.json.FetchJsonTask;
 import com.piyango.json.RequestManager;
-import com.piyango.model.SayisalSonuc;
+import com.piyango.model.PiyangoSonuc;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,13 +30,14 @@ public class OnNumaraActivity extends Activity {
     public static ArrayList<String> tarihList = new ArrayList<String>();
     private ProgressDialog mConnectionProgressDialog;
     private String cikanRakam = "";
+    private String piyangoTur = "onnumara";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_onnumara);
 
 
         mConnectionProgressDialog = new ProgressDialog(OnNumaraActivity.this);
@@ -73,7 +74,7 @@ public class OnNumaraActivity extends Activity {
                     spn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            RequestManager.getSayisal(new FetchJsonTask.Callback<SayisalSonuc>() {
+                            RequestManager.getPiyangoSonuc(new FetchJsonTask.Callback<PiyangoSonuc>() {
                                 @Override
                                 public void onFail() {
                                     Log.d("MilliPiyango", "HATA!");
@@ -85,15 +86,15 @@ public class OnNumaraActivity extends Activity {
                                 }
 
                                 @Override
-                                public void onSuccess(final SayisalSonuc obj) {
+                                public void onSuccess(final PiyangoSonuc obj) {
                                     updateDash(obj);
                                 }
-                            }, parent.getAdapter().getItem(position).toString());
+                            }, piyangoTur, parent.getAdapter().getItem(position).toString());
                         }
 
                         @Override
                         public void onNothingSelected(AdapterView<?> parent) {
-                            RequestManager.getSayisal(new FetchJsonTask.Callback<SayisalSonuc>() {
+                            RequestManager.getPiyangoSonuc(new FetchJsonTask.Callback<PiyangoSonuc>() {
                                 @Override
                                 public void onFail() {
                                     Log.d("MilliPiyango", "HATA!");
@@ -105,10 +106,10 @@ public class OnNumaraActivity extends Activity {
                                 }
 
                                 @Override
-                                public void onSuccess(final SayisalSonuc obj) {
+                                public void onSuccess(final PiyangoSonuc obj) {
                                     updateDash(obj);
                                 }
-                            }, parent.getAdapter().getItem(0).toString());
+                            }, piyangoTur, parent.getAdapter().getItem(0).toString());
                         }
 
                     });
@@ -148,7 +149,7 @@ public class OnNumaraActivity extends Activity {
         return true;
     }
 
-    public void updateDash( SayisalSonuc obj){
+    public void updateDash(PiyangoSonuc obj){
         cikanRakam = obj.data.rakamlar;
         Log.d("MilliPiyango", obj.data.cekilisTarihi + "\t" + obj.data.rakamlarNumaraSirasi );
         TextView v1 = (TextView) findViewById(R.id.sonucTextView);
@@ -160,7 +161,24 @@ public class OnNumaraActivity extends Activity {
         tempStr += ((EditText) findViewById(R.id.editText3)).getText().toString().trim()+"#";
         tempStr += ((EditText) findViewById(R.id.editText4)).getText().toString().trim()+"#";
         tempStr += ((EditText) findViewById(R.id.editText5)).getText().toString().trim()+"#";
-        tempStr += ((EditText) findViewById(R.id.editText6)).getText().toString().trim();
+        tempStr += ((EditText) findViewById(R.id.editText6)).getText().toString().trim()+"#";
+        tempStr += ((EditText) findViewById(R.id.editText7)).getText().toString().trim()+"#";
+        tempStr += ((EditText) findViewById(R.id.editText8)).getText().toString().trim()+"#";
+        tempStr += ((EditText) findViewById(R.id.editText9)).getText().toString().trim()+"#";
+        tempStr += ((EditText) findViewById(R.id.editText10)).getText().toString().trim()+"#";
+        tempStr += ((EditText) findViewById(R.id.editText11)).getText().toString().trim()+"#";
+        tempStr += ((EditText) findViewById(R.id.editText12)).getText().toString().trim()+"#";
+        tempStr += ((EditText) findViewById(R.id.editText13)).getText().toString().trim()+"#";
+        tempStr += ((EditText) findViewById(R.id.editText14)).getText().toString().trim()+"#";
+        tempStr += ((EditText) findViewById(R.id.editText15)).getText().toString().trim()+"#";
+        tempStr += ((EditText) findViewById(R.id.editText16)).getText().toString().trim()+"#";
+        tempStr += ((EditText) findViewById(R.id.editText17)).getText().toString().trim()+"#";
+        tempStr += ((EditText) findViewById(R.id.editText18)).getText().toString().trim()+"#";
+        tempStr += ((EditText) findViewById(R.id.editText19)).getText().toString().trim()+"#";
+        tempStr += ((EditText) findViewById(R.id.editText20)).getText().toString().trim()+"#";
+        tempStr += ((EditText) findViewById(R.id.editText21)).getText().toString().trim()+"#";
+        tempStr += ((EditText) findViewById(R.id.editText22)).getText().toString().trim();
+
         ((ProgressBar) findViewById(R.id.kacBildimBar)).setProgress(0);
 
         ((ProgressBar) findViewById(R.id.kacBildimBar)).setProgress(getMatches(obj.data.rakamlar, tempStr));

@@ -1,5 +1,6 @@
 package com.piyango.json;
 
+import com.piyango.model.PiyangoSonuc;
 import com.piyango.model.SayisalSonuc;
 import com.piyango.model.SonucTarih;
 
@@ -7,6 +8,10 @@ public class RequestManager {
 
 	public static void getSayisal(FetchJsonTask.Callback<SayisalSonuc> c,String hafta){
 		new FetchJsonTask<SayisalSonuc>(SayisalSonuc.class, "sonuclar/cekilisler/sayisal/"+hafta+".json", c).execute();
+	}
+
+	public static void getPiyangoSonuc(FetchJsonTask.Callback<PiyangoSonuc> c,String tur, String hafta){
+		new FetchJsonTask<PiyangoSonuc>(PiyangoSonuc.class, "sonuclar/cekilisler/"+tur+"/"+hafta+".json", c).execute();
 	}
 //http://www.millipiyango.gov.tr/sonuclar/listCekilisleriTarihleri.php
 	public static void getSayisalSonucTarihleri(FetchJsonTask.Callback<SonucTarih> c,String prm1,String tur){
