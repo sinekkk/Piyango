@@ -1,4 +1,4 @@
-package com.piyango.piyango;
+package com.piyango.json;
 
 
 import java.io.BufferedReader;

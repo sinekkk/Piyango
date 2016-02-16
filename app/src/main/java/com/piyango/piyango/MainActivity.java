@@ -1,9 +1,6 @@
 package com.piyango.piyango;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -20,12 +17,11 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.google.gson.reflect.TypeToken;
 import com.piyango.R;
+import com.piyango.json.CekilisRequest;
 import com.piyango.json.FetchJsonTask;
 import com.piyango.json.RequestManager;
 import com.piyango.model.SayisalSonuc;
-import com.piyango.model.SonucTarih;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

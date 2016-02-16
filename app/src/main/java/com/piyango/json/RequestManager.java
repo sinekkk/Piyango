@@ -1,6 +1,5 @@
 package com.piyango.json;
 
-import com.piyango.piyango.CekilisRequest;
 import com.piyango.model.SayisalSonuc;
 import com.piyango.model.SonucTarih;
 
