@@ -14,7 +14,7 @@ public class RequestManager {
 		new FetchJsonTask<SonucTarih>(SonucTarih.class, "sonuclar/listCekilisleriTarihleri.php", c).execute(prm1,tur);
 	}
 
-	public static void getSayisalSonucTarihleri(CekilisRequest.Callback<String> c,String tur){
+	public static void getSonucTarihleri(CekilisRequest.Callback<String> c,String tur){
 		new CekilisRequest(tur,c).execute();
 	}
 
