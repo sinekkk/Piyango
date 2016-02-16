@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <Button
+        android:layout_width="134dp"
+        android:layout_height="wrap_content"
+        android:text="Sayısal Loto"
+        android:id="@+id/sayisalLaunchBtn"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:text="Şans Topu"
+        android:id="@+id/sansTopuLaunchBtn"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="129dp"
+        android:layout_height="wrap_content"
+        android:text="On Numara"
+        android:id="@+id/onNumaraLaunchBtn"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="126dp"
+        android:layout_height="wrap_content"
+        android:text="Süper Loto"
+        android:id="@+id/superLotoLaunchBtn"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="138dp"
+        android:layout_height="wrap_content"
+        android:text="Milli Piyango"
+        android:id="@+id/milliPiyangoLaunchBtn"
+        android:layout_gravity="center_horizontal" />
+</LinearLayout>
