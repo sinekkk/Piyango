@@ -10,6 +10,7 @@ import android.widget.Button;
 
 import com.piyango.R;
 import com.piyango.piyango.onnumara.OnNumaraActivity;
+import com.piyango.piyango.sanstopu.SansTopuActivity;
 
 public class MainActivity extends Activity {
 
@@ -56,7 +57,8 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(MainActivity.this, SansTopuActivity.class);
+                startActivity(intent);
             }
         });
 
