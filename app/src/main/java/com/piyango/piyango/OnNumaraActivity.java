@@ -48,7 +48,7 @@ public class OnNumaraActivity extends Activity {
         mConnectionProgressDialog.setCancelable(false);
         mConnectionProgressDialog.setMessage("Tarih bilgileri yükleniyor...");
 
-        RequestManager.getSayisalSonucTarihleri(new CekilisRequest.Callback<String>() {
+        RequestManager.getSonucTarihleri(new CekilisRequest.Callback<String>() {
             @Override
             public void onFail() {
                 mConnectionProgressDialog.dismiss();
@@ -123,7 +123,7 @@ public class OnNumaraActivity extends Activity {
                 }
                 mConnectionProgressDialog.dismiss();
             }
-        }, "sayisal");
+        }, "onnumara");
 
 
         Button btn = (Button)findViewById(R.id.requestButton);
