@@ -9,6 +9,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.piyango.R;
+import com.piyango.piyango.onnumara.OnNumaraActivity;
 
 public class MainActivity extends Activity {
 

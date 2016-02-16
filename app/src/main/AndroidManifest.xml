@@ -22,7 +22,7 @@
         </activity>
 
         <activity
-            android:name="com.piyango.piyango.OnNumaraActivity"
+            android:name=".piyango.onnumara.OnNumaraActivity"
             android:label="@string/app_name">
         </activity>
     </application>
