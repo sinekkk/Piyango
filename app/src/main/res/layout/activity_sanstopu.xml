@@ -24,30 +24,10 @@
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tarihSpinner"
+                android:id="@+id/sanTopuTarihSpinner"
                 android:layout_below="@+id/linearLayout"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="45dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Çekiliş Tarihi:" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="trh"
-                android:id="@+id/tarihTextView" />
         </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"

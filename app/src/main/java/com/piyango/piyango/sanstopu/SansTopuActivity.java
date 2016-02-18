@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.piyango.R;
 import com.piyango.json.CekilisRequest;
@@ -17,12 +18,13 @@ import com.piyango.json.RequestManager;
 import com.piyango.model.PiyangoSonuc;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 public class SansTopuActivity extends Activity {
-    public static ArrayList<String> tarihList = new ArrayList<String>();
+    private static ArrayList<String> tarihList = new ArrayList<String>();
     private ProgressDialog mConnectionProgressDialog;
     private String cikanRakam = "";
     private String piyangoTur = "sanstopu";
@@ -32,85 +34,69 @@ public class SansTopuActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sanstopu);
 
-        mConnectionProgressDialog = new ProgressDialog(SansTopuActivity.this);
-        mConnectionProgressDialog.setCancelable(false);
-        mConnectionProgressDialog.setMessage("Tarih bilgileri yükleniyor...");
-
         RequestManager.getSonucTarihleri(new CekilisRequest.Callback<String>() {
             @Override
             public void onFail() {
-                mConnectionProgressDialog.dismiss();
+
             }
 
             @Override
             public void onStart() {
-                mConnectionProgressDialog.show();
+
             }
 
             @Override
             public void onSuccess(String obj) {
+                JSONArray mJsonArray = null;
                 try {
-                    JSONArray mJsonArray = new JSONArray(obj);
-                    ArrayList<String> tarihList = new ArrayList<>();
+                    mJsonArray = new JSONArray(obj);
+                    tarihList = new ArrayList<>();
                     JSONObject mJsonObject ;
                     for (int i = 0; i < mJsonArray.length(); i++) {
                         mJsonObject = mJsonArray.getJSONObject(i);
                         tarihList.add(mJsonObject.getString("tarih"));
                         mJsonObject.getString("tarihView");
                     }
-
-                    ArrayAdapter<CharSequence> adapter = new ArrayAdapter(SansTopuActivity.this, android.R.layout.simple_spinner_item, tarihList);
-                    Spinner spn = (Spinner) findViewById(R.id.tarihSpinner);
-                    spn.setAdapter(adapter);
-
-                    spn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            RequestManager.getPiyangoSonuc(new FetchJsonTask.Callback<PiyangoSonuc>() {
-                                @Override
-                                public void onFail() {
-                                    Log.d("MilliPiyango", "HATA!");
-                                }
-
-                                @Override
-                                public void onStart() {
-                                    Log.d("MilliPiyango", "ONSTART");
-                                }
-
-                                @Override
-                                public void onSuccess(final PiyangoSonuc obj) {
-                                    updateDash(obj);
-                                }
-                            }, piyangoTur, parent.getAdapter().getItem(position).toString());
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-                            RequestManager.getPiyangoSonuc(new FetchJsonTask.Callback<PiyangoSonuc>() {
-                                @Override
-                                public void onFail() {
-                                    Log.d("MilliPiyango", "HATA!");
-                                }
-
-                                @Override
-                                public void onStart() {
-                                    Log.d("MilliPiyango", "ONSTART");
-                                }
-
-                                @Override
-                                public void onSuccess(final PiyangoSonuc obj) {
-                                    updateDash(obj);
-                                }
-                            }, piyangoTur, parent.getAdapter().getItem(0).toString());
-                        }
-
-                    });
-
-                } catch (Exception e) {
-
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                mConnectionProgressDialog.dismiss();
+                ArrayAdapter<CharSequence> adapter = new ArrayAdapter(SansTopuActivity.this, android.R.layout.simple_spinner_item, tarihList);
+                Spinner spinner = (Spinner) findViewById(R.id.sanTopuTarihSpinner);
+                spinner.setAdapter(adapter);
+
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        RequestManager.getPiyangoSonuc(new FetchJsonTask.Callback<PiyangoSonuc>() {
+                            @Override
+                            public void onFail() {
+
+                            }
+
+                            @Override
+                            public void onStart() {
+
+                            }
+
+                            @Override
+                            public void onSuccess(PiyangoSonuc obj) {
+
+                                String [] rakam = obj.data.rakamlarNumaraSirasi.split("-");
+                                String [] rakam1 = obj.data.rakamlar.split("#");
+                                TextView tv = (TextView) findViewById(R.id.numaralarTextView);
+                                tv.setText(rakam[0]+rakam[1]+rakam[2]+rakam[3]+rakam[4]+"+ "+rakam1[5]);
+
+                            }
+                        },piyangoTur,(String)parent.getAdapter().getItem(position));
+
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
             }
-        }, "onnumara");
+        }, piyangoTur);
     }
 }
