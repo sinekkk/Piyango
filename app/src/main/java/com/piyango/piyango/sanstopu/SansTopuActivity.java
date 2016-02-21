@@ -20,6 +20,7 @@ import com.piyango.json.CekilisRequest;
 import com.piyango.json.FetchJsonTask;
 import com.piyango.json.RequestManager;
 import com.piyango.model.PiyangoSonuc;
+import com.piyango.piyango.Helper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -97,9 +98,26 @@ public class SansTopuActivity extends Activity {
                                 TextView ikramiyeView = (TextView) findViewById(R.id.büyükIkramiye2);
                                 TextView kisiSayisiView = (TextView) findViewById(R.id.kisiSayisi);
                                 TextView kazananIller = (TextView) findViewById(R.id.kazananIller);
-                                ikramiyeView.setText(obj.data.bilenKisiler.get(7).kisiBasinaDusenIkramiye);
-                                kisiSayisiView.setText(obj.data.bilenKisiler.get(7).kisiSayisi);
-                                //kazananIller.setText(obj.data.buyukIkramiyeKazananIl);
+
+                                ikramiyeView.setText(Helper.formatTutar(obj.data.bilenKisiler.get(7).kisiBasinaDusenIkramiye));
+                                String iller = "";
+                                if(Double.parseDouble(obj.data.bilenKisiler.get(7).kisiSayisi) ==0 ) {
+                                    kisiSayisiView.setText("Devretti");
+                                    kazananIller.setText("");
+                                }
+                                else {
+                                    kisiSayisiView.setText(obj.data.bilenKisiler.get(7).kisiSayisi);
+                                    for (int kisi = Integer.parseInt(obj.data.bilenKisiler.get(7).kisiSayisi);kisi>0;kisi--){
+                                        if(kisi > 1)
+                                            iller = iller + obj.data.buyukIkrKazananIlIlceler.get(kisi-1).ilView + ",";
+                                        else
+                                            iller = iller + obj.data.buyukIkrKazananIlIlceler.get(kisi-1).ilView;
+                                    }
+                                    kazananIller.setText(iller);
+                                }
+                                TextView sonrakiCekilisTarihi = (TextView) findViewById(R.id.sonrakiTarihTextView);
+                                Log.d("hebele",obj.data.cekilisTarihi);
+                               
 
                             }
                         },piyangoTur,(String)parent.getAdapter().getItem(position));

@@ -51,7 +51,7 @@
             <ToggleButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textOff="Çekiliş Detaylarını Kapat"
+                android:textOff="Çekiliş Detaylarını Gizle"
                 android:textOn="Çekiliş Detaylarını Göster"
                 android:id="@+id/cekilisDetayButton"/>
             <LinearLayout
