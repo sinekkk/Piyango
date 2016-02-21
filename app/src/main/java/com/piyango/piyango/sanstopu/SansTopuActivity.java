@@ -2,15 +2,18 @@ package com.piyango.piyango.sanstopu;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Context;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -26,7 +29,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class SansTopuActivity extends Activity {
     private static ArrayList<String> tarihList = new ArrayList<String>();
@@ -116,10 +124,29 @@ public class SansTopuActivity extends Activity {
                                     kazananIller.setText(iller);
                                 }
                                 TextView sonrakiCekilisTarihi = (TextView) findViewById(R.id.sonrakiTarihTextView);
-                                Log.d("hebele",obj.data.cekilisTarihi);
-                               
+                                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                                Calendar c = Calendar.getInstance();
+                                try {
+                                    c.setTime(sdf.parse(obj.data.cekilisTarihi));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                c.add(Calendar.DATE, 7);
+                                sonrakiCekilisTarihi.setText(sdf.format(c.getTime()));
+                                List <PiyangoSonuc> templist = new ArrayList<PiyangoSonuc>();
+                                templist.add(obj);
+                                templist.add(obj);
+                                templist.add(obj);
+                                templist.add(obj);
+                                CustomAdaptor adapter2 = new CustomAdaptor(SansTopuActivity.this, R.layout.benimnumaram_sanstopu, templist);
+                                ListView lv = (ListView) findViewById(R.id.listView);
+                                lv.setAdapter(adapter2);
+
+
+
 
                             }
+
                         },piyangoTur,(String)parent.getAdapter().getItem(position));
 
 
@@ -151,5 +178,38 @@ public class SansTopuActivity extends Activity {
         });
 
 
+    }
+    public class CustomAdaptor extends ArrayAdapter<PiyangoSonuc>{
+        public CustomAdaptor(Context context, int resource, List<PiyangoSonuc> items) {
+            super(context, resource, items);
+        }
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            View v = convertView;
+            if (v == null) {
+                LayoutInflater vi;
+                vi = LayoutInflater.from(getContext());
+                v = vi.inflate(R.layout.benimnumaram_sanstopu, null);
+            }
+
+            PiyangoSonuc p = getItem(position);
+            if (p != null) {
+                TextView tempNumaram = (TextView) v.findViewById(R.id.textView);
+                TextView tempikramiye = (TextView)v.findViewById(R.id.textView2);
+                Button analiz = (Button) v.findViewById(R.id.button);
+
+                if(tempNumaram != null && tempikramiye != null && analiz != null){
+                    tempNumaram.setText(p.data.rakamlarNumaraSirasi);
+                    tempikramiye.setText(p.data.buyukIkramiye);
+                    analiz.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d("analiz buttonu",position+"");
+                        }
+                    });
+                }
+            }
+            return v;
+        }
     }
 }
