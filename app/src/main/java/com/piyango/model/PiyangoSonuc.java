@@ -24,7 +24,7 @@ public class PiyangoSonuc {
         public String oid, hafta, buyukIkramiyeKazananIl, cekilisTarihi,cekilisTuru,rakamlar,rakamlarNumaraSirasi,devretti,devirTutari,
                 devirSayisi,kibrisHasilati,kolonSayisi,kdv,toplamHasilat,sov,ikramiyeEH,buyukIkramiye,haftayaDevredenTutar;
     }
-//
+//obj.data = {com.piyango.model.PiyangoSonuc$PiyangoModel@4171}
 //    {
 //        "success": true,
 //            "data": {

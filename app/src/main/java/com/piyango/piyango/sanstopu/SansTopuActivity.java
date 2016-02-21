@@ -4,12 +4,16 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.piyango.R;
 import com.piyango.json.CekilisRequest;
@@ -34,15 +38,19 @@ public class SansTopuActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sanstopu);
 
+        mConnectionProgressDialog = new ProgressDialog(SansTopuActivity.this);
+        mConnectionProgressDialog.setCancelable(false);
+        mConnectionProgressDialog.setMessage("Tarih bilgileri yükleniyor...");
+
         RequestManager.getSonucTarihleri(new CekilisRequest.Callback<String>() {
             @Override
             public void onFail() {
-
+                mConnectionProgressDialog.dismiss();
             }
 
             @Override
             public void onStart() {
-
+                mConnectionProgressDialog.show();
             }
 
             @Override
@@ -70,12 +78,12 @@ public class SansTopuActivity extends Activity {
                         RequestManager.getPiyangoSonuc(new FetchJsonTask.Callback<PiyangoSonuc>() {
                             @Override
                             public void onFail() {
-
+                                Log.d("MilliPiyango", "HATA!");
                             }
 
                             @Override
                             public void onStart() {
-
+                                Log.d("MilliPiyango", "ONSTART");
                             }
 
                             @Override
@@ -86,8 +94,17 @@ public class SansTopuActivity extends Activity {
                                 TextView tv = (TextView) findViewById(R.id.numaralarTextView);
                                 tv.setText(rakam[0]+rakam[1]+rakam[2]+rakam[3]+rakam[4]+"+ "+rakam1[5]);
 
+                                TextView ikramiyeView = (TextView) findViewById(R.id.büyükIkramiye2);
+                                TextView kisiSayisiView = (TextView) findViewById(R.id.kisiSayisi);
+                                TextView kazananIller = (TextView) findViewById(R.id.kazananIller);
+                                ikramiyeView.setText(obj.data.bilenKisiler.get(7).kisiBasinaDusenIkramiye);
+                                kisiSayisiView.setText(obj.data.bilenKisiler.get(7).kisiSayisi);
+                                //kazananIller.setText(obj.data.buyukIkramiyeKazananIl);
+
                             }
                         },piyangoTur,(String)parent.getAdapter().getItem(position));
+
+
 
                     }
 
@@ -96,7 +113,25 @@ public class SansTopuActivity extends Activity {
 
                     }
                 });
+                mConnectionProgressDialog.dismiss();
             }
         }, piyangoTur);
+
+        ToggleButton detay = (ToggleButton) findViewById(R.id.cekilisDetayButton);
+
+        detay.setChecked(true);
+        detay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayout detaylayout = (LinearLayout) ((View)v.getParent()).findViewById(R.id.detayLayout);
+                if(!((ToggleButton) v).isChecked()){
+                    detaylayout.setVisibility(View.VISIBLE);
+                }else{
+                    detaylayout.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
     }
 }
