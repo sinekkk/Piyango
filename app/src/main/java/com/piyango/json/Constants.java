@@ -20,7 +20,7 @@ public class Constants {
 		
 	final public static String PIYANGO_SHAREDPREFS= "com.piyango.app";
 
-	
+	final public static String SANSTOPU_BENIM_NUMARALARIM_SHAREDPREFS= "sanstopuBenimNumaralarim";
 	
 	final public static SimpleDateFormat DateTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ROOT);
 	final public static SimpleDateFormat DateFormat = new SimpleDateFormat("ddMMyyyy", Locale.ROOT);

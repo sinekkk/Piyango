@@ -22,6 +22,7 @@ import com.piyango.json.CekilisRequest;
 import com.piyango.json.FetchJsonTask;
 import com.piyango.json.RequestManager;
 import com.piyango.model.PiyangoSonuc;
+import com.piyango.piyango.Helper;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -135,7 +136,7 @@ public class OnNumaraActivity extends Activity {
                 tempStr += ((EditText) findViewById(R.id.editText5)).getText().toString().trim()+"#";
                 tempStr += ((EditText) findViewById(R.id.editText6)).getText().toString().trim();
                 ((ProgressBar) findViewById(R.id.kacBildimBar)).setProgress(0);
-                ((ProgressBar) findViewById(R.id.kacBildimBar)).setProgress(getMatches(cikanRakam, tempStr));
+                ((ProgressBar) findViewById(R.id.kacBildimBar)).setProgress(Helper.getMatches(cikanRakam, tempStr));
             }
         });
     }
@@ -181,27 +182,9 @@ public class OnNumaraActivity extends Activity {
 
         ((ProgressBar) findViewById(R.id.kacBildimBar)).setProgress(0);
 
-        ((ProgressBar) findViewById(R.id.kacBildimBar)).setProgress(getMatches(obj.data.rakamlar, tempStr));
+        ((ProgressBar) findViewById(R.id.kacBildimBar)).setProgress(Helper.getMatches(obj.data.rakamlar, tempStr));
     }
 
-    public int getMatches(String cikanRakamlar, String testRakamlar){
-        String[] cikan = cikanRakamlar.split("#");
-        String[] test = testRakamlar.split("#");
-        if(cikan.length != test.length)
-            return -1;
 
-        int count = 0;
-        for (int i = 0 ; cikan.length > i ; i++){
-            for (int k = 0 ; test.length > k ; k++) {
-                if (Integer.parseInt(cikan[i])==Integer.parseInt(test[k])) {
-                    count++;
-                    break;
-                }
-            }
-        }
-
-        Log.d("MilliPiyango", count+"");
-        return count;
-    }
 
 }

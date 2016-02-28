@@ -4,5 +4,6 @@
     <string name="app_name">MilliPiyango</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="yeni_numara_ekle">Yeni Numara Ekle</string>
 
 </resources>

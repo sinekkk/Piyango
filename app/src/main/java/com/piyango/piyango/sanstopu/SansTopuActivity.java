@@ -3,7 +3,12 @@ package com.piyango.piyango.sanstopu;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.CalendarContract;
+import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +25,7 @@ import android.widget.ToggleButton;
 
 import com.piyango.R;
 import com.piyango.json.CekilisRequest;
+import com.piyango.json.Constants;
 import com.piyango.json.FetchJsonTask;
 import com.piyango.json.RequestManager;
 import com.piyango.model.PiyangoSonuc;
@@ -29,18 +35,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class SansTopuActivity extends Activity {
     private static ArrayList<String> tarihList = new ArrayList<String>();
     private ProgressDialog mConnectionProgressDialog;
     private String cikanRakam = "";
     private String piyangoTur = "sanstopu";
+    public static PiyangoSonuc ps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,13 +107,14 @@ public class SansTopuActivity extends Activity {
 
                             @Override
                             public void onSuccess(PiyangoSonuc obj) {
+                                ps = obj;
 
                                 String [] rakam = obj.data.rakamlarNumaraSirasi.split("-");
                                 String [] rakam1 = obj.data.rakamlar.split("#");
                                 TextView tv = (TextView) findViewById(R.id.numaralarTextView);
                                 tv.setText(rakam[0]+rakam[1]+rakam[2]+rakam[3]+rakam[4]+"+ "+rakam1[5]);
 
-                                TextView ikramiyeView = (TextView) findViewById(R.id.büyükIkramiye2);
+                                TextView ikramiyeView = (TextView) findViewById(R.id.buyukIkramiye);
                                 TextView kisiSayisiView = (TextView) findViewById(R.id.kisiSayisi);
                                 TextView kazananIller = (TextView) findViewById(R.id.kazananIller);
 
@@ -133,16 +144,28 @@ public class SansTopuActivity extends Activity {
                                 }
                                 c.add(Calendar.DATE, 7);
                                 sonrakiCekilisTarihi.setText(sdf.format(c.getTime()));
-                                List <PiyangoSonuc> templist = new ArrayList<PiyangoSonuc>();
-                                templist.add(obj);
-                                templist.add(obj);
-                                templist.add(obj);
-                                templist.add(obj);
+
+
+                                List <String> templist = new ArrayList<String>();
+                                Set<String> k =Helper.getDefaults(Constants.SANSTOPU_BENIM_NUMARALARIM_SHAREDPREFS, SansTopuActivity.this);
+                                if(k!=null) {
+                                    Iterator it = k.iterator();
+                                    while(it.hasNext()) {
+                                        templist.add((String)it.next());
+                                    }
+                                }
                                 CustomAdaptor adapter2 = new CustomAdaptor(SansTopuActivity.this, R.layout.benimnumaram_sanstopu, templist);
                                 ListView lv = (ListView) findViewById(R.id.listView);
                                 lv.setAdapter(adapter2);
 
 
+                                Button yeniNumaraBtn = (Button) findViewById(R.id.numaraEklebtn);
+                                yeniNumaraBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        startActivity(new Intent(SansTopuActivity.this,YeniNumara.class));
+                                    }
+                                });
 
 
                             }
@@ -168,39 +191,80 @@ public class SansTopuActivity extends Activity {
         detay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LinearLayout detaylayout = (LinearLayout) ((View)v.getParent()).findViewById(R.id.detayLayout);
+                TextView buyukIkramiyeText = (TextView) ((View)v.getParent()).findViewById(R.id.buyukIkramiyeText);
+                TextView buyukIkramiye = (TextView) ((View)v.getParent()).findViewById(R.id.buyukIkramiye);
+                TextView kisiSayisiText = (TextView) ((View)v.getParent()).findViewById(R.id.kisiSayisiText);
+                TextView kisiSayisi = (TextView) ((View)v.getParent()).findViewById(R.id.kisiSayisi);
+                TextView kazananIllerText = (TextView) ((View)v.getParent()).findViewById(R.id.kazananIllerText);
+                TextView kazananIller = (TextView) ((View)v.getParent()).findViewById(R.id.kazananIller);
+
                 if(!((ToggleButton) v).isChecked()){
-                    detaylayout.setVisibility(View.VISIBLE);
+                    buyukIkramiyeText.setVisibility(View.VISIBLE);
+                    buyukIkramiye.setVisibility(View.VISIBLE);
+                    kisiSayisiText.setVisibility(View.VISIBLE);
+                    kisiSayisi.setVisibility(View.VISIBLE);
+                    kazananIllerText.setVisibility(View.VISIBLE);
+                    kazananIller.setVisibility(View.VISIBLE);
+
                 }else{
-                    detaylayout.setVisibility(View.GONE);
+                    buyukIkramiyeText.setVisibility(View.GONE);
+                    buyukIkramiye.setVisibility(View.GONE);
+                    kisiSayisiText.setVisibility(View.GONE);
+                    kisiSayisi.setVisibility(View.GONE);
+                    kazananIllerText.setVisibility(View.GONE);
+                    kazananIller.setVisibility(View.GONE);
                 }
             }
         });
 
 
     }
-    public class CustomAdaptor extends ArrayAdapter<PiyangoSonuc>{
-        public CustomAdaptor(Context context, int resource, List<PiyangoSonuc> items) {
+    public class CustomAdaptor extends ArrayAdapter<String>{
+        public CustomAdaptor(Context context, int resource, List<String> items) {
             super(context, resource, items);
         }
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             View v = convertView;
+            int count1,count2;
             if (v == null) {
                 LayoutInflater vi;
                 vi = LayoutInflater.from(getContext());
                 v = vi.inflate(R.layout.benimnumaram_sanstopu, null);
             }
 
-            PiyangoSonuc p = getItem(position);
+            String p = getItem(position);
+            String [] cikanRakamlar = ps.data.rakamlar.split("#");
             if (p != null) {
-                TextView tempNumaram = (TextView) v.findViewById(R.id.textView);
-                TextView tempikramiye = (TextView)v.findViewById(R.id.textView2);
-                Button analiz = (Button) v.findViewById(R.id.button);
+                ArrayList<TextView> tempnumaram = new ArrayList<TextView>();
 
-                if(tempNumaram != null && tempikramiye != null && analiz != null){
-                    tempNumaram.setText(p.data.rakamlarNumaraSirasi);
-                    tempikramiye.setText(p.data.buyukIkramiye);
+
+                tempnumaram.add(0,(TextView) v.findViewById(R.id.benimNumaralarımNo1));
+                tempnumaram.add(1,(TextView) v.findViewById(R.id.benimNumaralarımNo2));
+                tempnumaram.add(2,(TextView) v.findViewById(R.id.benimNumaralarımNo3));
+                tempnumaram.add(3,(TextView) v.findViewById(R.id.benimNumaralarımNo4));
+                tempnumaram.add(4,(TextView) v.findViewById(R.id.benimNumaralarımNo5));
+                tempnumaram.add(5,(TextView) v.findViewById(R.id.benimNumaralarımNo6));
+                TextView tempikramiye = (TextView)v.findViewById(R.id.benimNumaralarımIkramiye);
+                Button analiz = (Button) v.findViewById(R.id.benimNumaralarımButon);
+
+
+
+                if(tempnumaram!= null && tempikramiye != null && analiz != null) {
+                    tempikramiye.setText("0TL");
+                    String[] gelenRakamlar = p.split("#");
+                    ArrayList<Integer> sonuclar = Helper.getEslesme(cikanRakamlar,gelenRakamlar,"sanstopu");
+                    for (int i = 0; i<6; i++) {
+                        tempnumaram.get(i).setText(gelenRakamlar[i]);
+                        tempnumaram.get(i).setBackgroundColor(sonuclar.get(i));
+                    }
+                    if(sonuclar.get(6) != -1)
+                        tempikramiye.setText(ps.data.bilenKisiler.get(sonuclar.get(6)).kisiBasinaDusenIkramiye + "TL");
+
+
+                    //burda hesap yap
+
+                    //tempikramiye.setText(Helper.getMatches(ps.data.rakamlar,p));
                     analiz.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -212,4 +276,6 @@ public class SansTopuActivity extends Activity {
             return v;
         }
     }
+
+
 }

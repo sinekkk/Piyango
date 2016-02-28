@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/sanstopuPop">
+
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sanstopuYeniNumara1"
+        android:inputType="number"
+        android:maxLength="2"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sanstopuYeniNumara2"
+        android:inputType="number"
+        android:maxLength="2"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sanstopuYeniNumara3"
+        android:inputType="number"
+        android:maxLength="2"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sanstopuYeniNumara4"
+        android:inputType="number"
+        android:maxLength="2"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sanstopuYeniNumara5"
+        android:inputType="number"
+        android:maxLength="2"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sanstopuYeniNumara6"
+        android:inputType="number"
+        android:maxLength="2" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Button"
+        android:id="@+id/sanstopuYeniNumaraOnay"
+        android:onClick="yeniNumaraEkle"/>
+</LinearLayout>
